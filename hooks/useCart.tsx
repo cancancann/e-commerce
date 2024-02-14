@@ -14,7 +14,10 @@ interface CartContextProps {
   productCartQty: number;
   cartPrdcts: CardProductProps[] | null;
   addToBasket: (product: CardProductProps) => void;
+  addToBasketIncrease: (product: CardProductProps) => void;
+  addToBasketDecrease: (product: CardProductProps) => void;
   removeFromCart: (product: CardProductProps) => void;
+  removeCart: () => void;
 }
 
 const CartContext = createContext<CartContextProps | null>(null);
@@ -49,13 +52,85 @@ export const CartContextProvider = (props: Props) => {
     },
     [cartPrdcts]
   );
-  const removeFromCart = useCallback((product: CardProductProps) => {}, []);
+
+  const addToBasketIncrease = useCallback(
+    (product: CardProductProps) => {
+      let updatedCart;
+
+      if (product.quantity == 10) {
+        return toast.error("Daha fazla eklemeyemezsiniz.");
+      }
+      if (cartPrdcts) {
+        updatedCart = [...cartPrdcts];
+        const existingItem = cartPrdcts.findIndex(
+          (item) => item.id === product.id
+        );
+
+        if (existingItem > -1) {
+          updatedCart[existingItem].quantity = ++updatedCart[existingItem]
+            .quantity;
+        }
+        setCartPrdcts(updatedCart);
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+      }
+    },
+    [cartPrdcts]
+  );
+
+  const addToBasketDecrease = useCallback(
+    (product: CardProductProps) => {
+      let updatedCart;
+
+      if (product.quantity == 1) {
+        return toast.error("Daha fazla çıkartamazsınız..");
+      }
+      if (cartPrdcts) {
+        updatedCart = [...cartPrdcts];
+        const existingItem = cartPrdcts.findIndex(
+          (item) => item.id === product.id
+        );
+
+        if (existingItem > -1) {
+          updatedCart[existingItem].quantity = --updatedCart[existingItem]
+            .quantity;
+        }
+        setCartPrdcts(updatedCart);
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+      }
+    },
+    [cartPrdcts]
+  );
+
+  const removeCart = useCallback(() => {
+    setCartPrdcts(null);
+    toast.success("Ürünler sepetten silindi..");
+    localStorage.setItem("cart", JSON.stringify(null));
+  }, []);
+
+  const removeFromCart = useCallback(
+    (product: CardProductProps) => {
+      if (cartPrdcts) {
+        const filteredProducts = cartPrdcts.filter(
+          (cart) => cart.id !== product.id
+        );
+
+        setCartPrdcts(filteredProducts);
+        toast.success("Ürün sepetten silindi..");
+        localStorage.setItem("cart", JSON.stringify(filteredProducts));
+      }
+    },
+
+    [cartPrdcts]
+  );
 
   let value = {
     productCartQty,
     addToBasket,
     cartPrdcts,
     removeFromCart,
+    removeCart,
+    addToBasketIncrease,
+    addToBasketDecrease,
   };
 
   return <CartContext.Provider value={value} {...props} />;
