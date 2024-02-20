@@ -11,8 +11,13 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { User } from "@prisma/client";
 
-const LoginClient = () => {
+interface UserProps {
+  currentUser: User | null | undefined;
+}
+
+const LoginClient: React.FC<UserProps> = ({ currentUser }) => {
   const router = useRouter();
   const {
     register,
