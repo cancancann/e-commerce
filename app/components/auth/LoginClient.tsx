@@ -12,12 +12,13 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { User } from "@prisma/client";
+import { useEffect } from "react";
 
-interface UserProps {
+interface LoginClientProps {
   currentUser: User | null | undefined;
 }
 
-const LoginClient: React.FC<UserProps> = ({ currentUser }) => {
+const LoginClient: React.FC<LoginClientProps> = ({ currentUser }) => {
   const router = useRouter();
   const {
     register,
@@ -41,6 +42,13 @@ const LoginClient: React.FC<UserProps> = ({ currentUser }) => {
       }
     });
   };
+
+  useEffect(() => {
+    if (currentUser) {
+      router.push("/cart");
+      router.refresh();
+    }
+  }, []);
 
   return (
     <AuthContainer>
@@ -73,7 +81,7 @@ const LoginClient: React.FC<UserProps> = ({ currentUser }) => {
         <Button
           text="Google İle Giriş Yap"
           icon={FaGoogle}
-          onClick={() => {}}
+          onClick={() => signIn("google")}
           outline
         />
       </div>
