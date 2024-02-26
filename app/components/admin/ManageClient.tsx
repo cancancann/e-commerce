@@ -6,6 +6,8 @@ import { useCallback } from "react";
 import { deleteObject, getStorage, ref } from "firebase/storage";
 import firebaseApp from "@/libs/firebase";
 import toast from "react-hot-toast";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 interface ManageClientProps {
   products: Product[];
@@ -13,6 +15,7 @@ interface ManageClientProps {
 
 const ManageClient: React.FC<ManageClientProps> = ({ products }) => {
   const storage = getStorage(firebaseApp);
+  const router = useRouter();
 
   let rows: any = [];
   if (products) {
@@ -53,10 +56,10 @@ const ManageClient: React.FC<ManageClientProps> = ({ products }) => {
       field: "actions",
       headerName: "Action",
       width: 100,
-      renderCell: () => {
+      renderCell: (params) => {
         return (
           <button
-            onClick={() => handleDelete()}
+            onClick={() => handleDelete(params.row.id, params.row.image)}
             className="mx-4 text-red-500 cursor-pointer"
           >
             Sil
@@ -70,14 +73,22 @@ const ManageClient: React.FC<ManageClientProps> = ({ products }) => {
     toast.success("Sildirme işlemi için bekleyin...");
     const handleDeleteImg = async () => {
       try {
-        const imageRef = ref(storage, "silinmesi istenilen dosya gelmeli");
+        const imageRef = ref(storage, image);
         await deleteObject(imageRef);
       } catch (error) {
         return console.log("Bir hata mevcut", error);
       }
     };
     await handleDeleteImg();
-    //burada sildirme işlemleri api isteği atılması gerekir
+    axios
+      .delete(`/api/product/${id}`)
+      .then(() => {
+        toast.success("Sildirme işlemi başarılı");
+        router.refresh();
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
   }, []);
 
   return (
