@@ -28,7 +28,7 @@ const AdminSidebar = () => {
     },
   ];
   return (
-    <div className="w-1/6 border-r h-screen p-4 bg-orange-600">
+    <div className="w-1/5 border-r h-screen p-4 bg-orange-600">
       <div className="space-y-4">
         {adminPanel.map((admin, index) => (
           <AdminSidebarItem
