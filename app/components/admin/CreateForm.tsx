@@ -21,10 +21,13 @@ import Checkbox from "../general/Checkbox";
 import ChoiceInput from "../general/ChoiceInput";
 import Button from "../general/Button";
 import firebaseApp from "@/libs/firebase";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const CreateForm = () => {
   const [img, setImg] = useState<File | null>(null);
   const [uploadedImg, setUploadedImg] = useState<string | null>(null);
+  const router = useRouter();
 
   const categoryList = [
     { name: "Bilgisayar", icon: FaComputer },
@@ -39,6 +42,7 @@ const CreateForm = () => {
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
@@ -82,9 +86,9 @@ const CreateForm = () => {
             () => {
               getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                 console.log("File available at", downloadURL);
-                setUploadedImg(downloadURL)
+                setUploadedImg(downloadURL);
+                resolve();
               });
-              resolve();
             }
           );
         });
@@ -97,7 +101,18 @@ const CreateForm = () => {
 
     let newData = { ...data, image: uploadedImg };
 
-    console.log(newData,"newdata")
+    axios
+      .post("/api/product", newData)
+      .then(() => {
+        toast.success("Ürün ekleme işlemi başarılı !");
+        router.refresh();
+        reset();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    console.log(newData, "newdata");
   };
 
   const category = watch("category");
