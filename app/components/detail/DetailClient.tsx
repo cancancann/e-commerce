@@ -34,7 +34,6 @@ const DetailClient = ({ product }: { product: any }) => {
     inStock: product.inStock,
   });
 
-
   useEffect(() => {
     setDisplayButton(false);
     let controlDisplay: any = cartPrdcts?.findIndex(
@@ -43,7 +42,7 @@ const DetailClient = ({ product }: { product: any }) => {
     if (controlDisplay > -1) {
       setDisplayButton(true);
     }
-  }, [cartPrdcts]);
+  }, [cartPrdcts, product.id]);
 
   const increaseFunc = () => {
     if (cardProduct.quantity == 10) return;
