@@ -54,7 +54,7 @@ const RegisterClient: React.FC<RegisterClientProps> = ({ currentUser }) => {
       router.push("/cart");
       router.refresh();
     }
-  }, []);
+  }, [router,currentUser]);
 
   return (
     <AuthContainer>
