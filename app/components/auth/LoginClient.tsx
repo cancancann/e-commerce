@@ -48,7 +48,7 @@ const LoginClient: React.FC<LoginClientProps> = ({ currentUser }) => {
       router.push("/cart");
       router.refresh();
     }
-  }, []);
+  }, [router, currentUser]);
 
   return (
     <AuthContainer>

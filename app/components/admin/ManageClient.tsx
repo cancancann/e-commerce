@@ -89,7 +89,7 @@ const ManageClient: React.FC<ManageClientProps> = ({ products }) => {
       .catch((error: any) => {
         console.log(error);
       });
-  }, []);
+  }, [router,storage]);
 
   return (
     <div>
