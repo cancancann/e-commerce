@@ -1,8 +1,11 @@
+import AuthContainer from "../components/containers/AuthContainer";
 
 const Admin = () => {
   return (
-    <div>Admin</div>
-  )
-}
+    <AuthContainer>
+      Görüntülenecek herhangi bir özet bulunmamaktadır...
+    </AuthContainer>
+  );
+};
 
-export default Admin
+export default Admin;

@@ -1,9 +1,8 @@
-import React from 'react'
+import AuthContainer from "@/app/components/containers/AuthContainer";
+import React from "react";
 
 const Order = () => {
-  return (
-    <div>Order</div>
-  )
-}
+  return <AuthContainer>Herhangi bir sipariş bulunmamaktadır...</AuthContainer>;
+};
 
-export default Order
+export default Order;
