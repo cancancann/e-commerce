@@ -1,13 +1,13 @@
 "use client";
 const Category = () => {
   const categoryList = [
-    { name: "Ayakkabı" },
-    { name: "Ayakkabı" },
-    { name: "Ayakkabı" },
-    { name: "Ayakkabı" },
-    { name: "Ayakkabı" },
-    { name: "Ayakkabı" },
-    { name: "Ayakkabı" },
+    { name: "Telefon" },
+    { name: "Tablet" },
+    { name: "Masaüstü PC" },
+    { name: "Dizüstü PC" },
+    { name: "Apple" },
+    { name: "Samsung" },
+    { name: "Lenovo" },
   ];
   return (
     <div className="flex items-center justify-center px-3 md:px-10 gap-3 md:gap-10 py-5 md:py-8 overflow-x-auto">
